@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.log
+*.sqlite3
+
+# Virtual environment
+.venv/
+virtualenv/
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+
+# Environment variables
+.env
+
+# Media and static files
+media/
+static_root/
+staticfiles/
+
+# OS generated files
+.DS_Store
+thumbs.db
