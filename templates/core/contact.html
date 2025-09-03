@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Contact TrekMate - Get in Touch{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-trek-green to-trek-blue text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <h1 class="text-5xl font-bold mb-6">Contact Us</h1>
+        <p class="text-xl max-w-3xl mx-auto">Ready to start your Himalayan adventure? Get in touch with us!</p>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="py-20">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-12">
+            <!-- Contact Form -->
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Send us a Message</h2>
+                <form class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <input type="text" id="name" name="name" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trek-blue focus:border-transparent transition-colors">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="email" name="email" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trek-blue focus:border-transparent transition-colors">
+                    </div>
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                        <select id="subject" name="subject" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trek-blue focus:border-transparent transition-colors">
+                            <option value="">Select a subject</option>
+                            <option value="trek-booking">Trek Booking</option>
+                            <option value="guide-inquiry">Guide Inquiry</option>
+                            <option value="general-question">General Question</option>
+                            <option value="partnership">Partnership</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" required 
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trek-blue focus:border-transparent transition-colors"
+                                  placeholder="Tell us about your trekking plans or any questions you have..."></textarea>
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-trek-blue hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors transform hover:scale-105">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Get in Touch</h2>
+                    <p class="text-lg text-gray-600 mb-8">
+                        We're here to help you plan your perfect Himalayan adventure. Whether you have 
+                        questions about treks, need help choosing a guide, or want to discuss custom 
+                        itineraries, our team is ready to assist you.
+                    </p>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-md">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">📧</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Email</h3>
+                            <p class="text-gray-600">contact@TrekMate.example</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-md">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">📞</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Phone</h3>
+                            <p class="text-gray-600">+977-1-XXXXXXX</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-md">
+                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">🕒</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Business Hours</h3>
+                            <p class="text-gray-600">Mon-Sat: 9:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-4xl font-bold text-gray-800 text-center mb-16">Frequently Asked Questions</h2>
+        <div class="space-y-6">
+            <div class="border border-gray-200 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-3">How do I book a trek?</h3>
+                <p class="text-gray-600">You can book a trek through our website by browsing available treks and selecting your preferred dates. Our team will guide you through the entire process.</p>
+            </div>
+            <div class="border border-gray-200 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-3">Are the guides certified?</h3>
+                <p class="text-gray-600">Yes, all our guides are certified and experienced professionals with extensive knowledge of the Himalayan trails and safety protocols.</p>
+            </div>
+            <div class="border border-gray-200 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-3">What should I pack for a trek?</h3>
+                <p class="text-gray-600">We provide a comprehensive packing list based on your trek difficulty and season. Essential items include proper hiking boots, warm clothing, and personal gear.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

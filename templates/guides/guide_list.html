@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Our Guides - TrekMate{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <h2 class="text-4xl font-bold text-trek-blue mb-6 text-center">Meet Our Guides</h2>
+
+    <!-- Search Form -->
+    <form method="get" class="flex justify-center mb-8">
+        <input type="text" name="q" placeholder="Search Guides"
+            class="border border-gray-300 rounded-l px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-trek-blue">
+        <button type="submit"
+            class="bg-trek-blue text-white px-4 py-2 rounded-r hover:bg-trek-green">Search</button>
+    </form>
+
+    <!-- Guide Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {% for guide in guides %}
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300">
+            {% if guide.profile_image %}
+            <img src="{{ guide.profile_image.url }}" alt="{{ guide.user.username }}" class="w-full h-56 object-cover">
+            {% else %}
+            <div class="w-full h-56 bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-500">No Image</span>
+            </div>
+            {% endif %}
+            <div class="p-4">
+                <h3 class="text-xl font-semibold text-trek-blue">{{ guide.user.username }}</h3>
+                <p class="text-gray-600 mt-1"><strong>Languages:</strong> {{ guide.languages }}</p>
+                <p class="text-gray-700 mt-2">{{ guide.experience|truncatechars:80 }}</p>
+                <a href="{% url 'guides:detail' guide.pk %}"
+                    class="inline-block mt-4 bg-trek-orange text-white px-4 py-2 rounded hover:bg-trek-purple">View
+                    Profile</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

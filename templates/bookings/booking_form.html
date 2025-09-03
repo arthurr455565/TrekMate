@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Book a Guide - TrekMate{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8 bg-white rounded shadow">
+    <h2 class="text-2xl font-semibold text-trek-blue mb-4">Book a Guide</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="mt-4 bg-trek-green text-white px-4 py-2 rounded hover:bg-trek-blue">
+            Book Now
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Add Review - TrekMate{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8 bg-white rounded shadow">
+    <h2 class="text-2xl font-semibold text-trek-blue mb-4">
+        Add Review for {{ booking.guide.user.username }} ({{ booking.trek.name }})
+    </h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="mt-4 bg-trek-green text-white px-4 py-2 rounded hover:bg-trek-blue">
+            Submit Review
+        </button>
+    </form>
+</div>
+{% endblock %}

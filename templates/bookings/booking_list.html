@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings - TrekMate{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <h2 class="text-3xl font-semibold text-trek-blue mb-6">Bookings</h2>
+    <table class="w-full bg-white rounded shadow overflow-hidden">
+        <thead class="bg-trek-blue text-white">
+            <tr>
+                <th class="px-4 py-2">Trekker</th>
+                <th class="px-4 py-2">Guide</th>
+                <th class="px-4 py-2">Trek</th>
+                <th class="px-4 py-2">Date</th>
+                <th class="px-4 py-2">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr class="border-b">
+                <td class="px-4 py-2">{{ booking.trekker.username }}</td>
+                <td class="px-4 py-2">{{ booking.guide.user.username }}</td>
+                <td class="px-4 py-2">{{ booking.trek.name }}</td>
+                <td class="px-4 py-2">{{ booking.date }}</td>
+                <td class="px-4 py-2">{{ booking.status }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="px-4 py-2 text-center text-gray-500">No bookings found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

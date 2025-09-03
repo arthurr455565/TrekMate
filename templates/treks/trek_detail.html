@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ trek.name }} - TrekMate{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-8 bg-white rounded shadow">
+    <h2 class="text-3xl font-semibold text-trek-blue mb-4">{{ trek.name }}</h2>
+    {% if trek.image %}
+    <img src="{{ trek.image.url }}" alt="{{ trek.name }}" class="w-full h-64 object-cover rounded mb-6">
+    {% endif %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <p><strong>Location:</strong> {{ trek.location }}</p>
+            <p><strong>Difficulty:</strong> {{ trek.difficulty }}</p>
+            <p><strong>Duration:</strong> {{ trek.duration }}</p>
+            <p><strong>Altitude:</strong> {{ trek.altitude }} m</p>
+            <p><strong>Best Season:</strong> {{ trek.best_season }}</p>
+        </div>
+        <div>
+            <p>{{ trek.description }}</p>
+        </div>
+    </div>
+    <a href="{% url 'trek_list' %}"
+        class="mt-6 inline-block bg-trek-green text-white px-4 py-2 rounded hover:bg-trek-blue">Back to All Treks</a>
+</div>
+{% endblock %}
