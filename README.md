@@ -18,16 +18,14 @@ Note: the project uses SQLite by default (`db.sqlite3`) so there is no extra dat
 
 ---
 
-## 1. Clone / open the project
 
-If you cloned from a repo, change into the project directory. If your folder name contains spaces like `TrekMate Project`, wrap it in quotes when using cd:
+## 1. Clone the GitHub repository
 
-sh commands:
+Clone the project from GitHub using:
 
 ```sh
-cd "TrekMate Project"
-# or if you renamed the folder to trekmate_project:
-# cd trekmate_project
+git clone https://github.com/arthurr455565/TrekMate.git
+cd TrekMate
 ```
 
 ---
@@ -241,7 +239,3 @@ This project includes `TAILWIND_SETUP.md`. If you want to compile Tailwind local
 - Follow `TAILWIND_SETUP.md` for registering Tailwind via npm and building a CSS file to include in `base.html` instead of CDN
 
 ---
-
-## 14. Further development suggestions
-
-- Add tests in each app (see `
