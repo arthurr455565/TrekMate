@@ -34,11 +34,25 @@ cd TrekMate
 
 It's recommended to create a project-level virtual environment. This example will create `.venv` in the project root.
 
-sh commands:
+**Linux/macOS (sh/bash):**
 
 ```sh
 python -m venv .venv
 . .venv/bin/activate
+```
+
+**Windows (PowerShell):**
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+**Windows (Command Prompt):**
+
+```cmd
+python -m venv .venv
+.venv\Scripts\activate.bat
 ```
 
 You should see your shell prompt change to indicate the virtualenv is active.
