@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(DEBUG=(bool, True))
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-# Configure PyMySQL to work with Django (alternative to mysqlclient)
+# Configure PyMySQL
 USE_MYSQL = env.bool("USE_MYSQL", default=False)
 if USE_MYSQL:
     try:
