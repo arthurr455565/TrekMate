@@ -6,6 +6,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(DEBUG=(bool, True))
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
+# Configure PyMySQL to work with Django (alternative to mysqlclient)
+USE_MYSQL = env.bool("USE_MYSQL", default=False)
+if USE_MYSQL:
+    try:
+        import pymysql
+        pymysql.install_as_MySQLdb()
+    except ImportError:
+        pass  # mysqlclient is being used instead
+
 SECRET_KEY = env("SECRET_KEY", default="dev-insecure")
 DEBUG = env.bool("DEBUG", default=True)
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
@@ -60,17 +69,27 @@ TEMPLATES = [{
 
 WSGI_APPLICATION = "trekbook_manager.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": env("DB_NAME", default="trekbook"),
-        "USER": env("DB_USER", default="root"),
-        "PASSWORD": env("DB_PASSWORD", default=""),
-        "HOST": env("DB_HOST", default="127.0.0.1"),
-        "PORT": env("DB_PORT", default="3306"),
-        "OPTIONS": {"charset": "utf8mb4"},
+# Use SQLite for development (default), MySQL for production
+# To use MySQL, set USE_MYSQL=True in .env
+if USE_MYSQL:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": env("DB_NAME", default="trekbook"),
+            "USER": env("DB_USER", default="root"),
+            "PASSWORD": env("DB_PASSWORD", default=""),
+            "HOST": env("DB_HOST", default="127.0.0.1"),
+            "PORT": env("DB_PORT", default="3306"),
+            "OPTIONS": {"charset": "utf8mb4"},
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 AUTH_USER_MODEL = "accounts.User"
 
