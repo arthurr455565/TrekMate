@@ -1,34 +1,110 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}All Treks - TrekMate{% endblock %}
+{% block title %}Explore Treks - TrekMate{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 py-8">
-    <h2 class="text-3xl font-semibold text-trek-blue mb-6">All Treks</h2>
-
-    <!-- Search Form -->
-    <form method="get" class="mb-6">
-        <input type="text" name="q" placeholder="Search Treks"
-            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-trek-blue">
-        <button type="submit"
-            class="bg-trek-blue text-white px-4 py-2 rounded hover:bg-trek-green ml-2">Search</button>
-    </form>
-
-    <!-- Trek List -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for trek in treks %}
-        <div class="bg-white rounded shadow p-4 hover:shadow-lg transition duration-200">
-            {% if trek.image %}
-            <img src="{{ trek.image.url }}" alt="{{ trek.name }}" class="w-full h-48 object-cover rounded mb-4">
-            {% endif %}
-            <h3 class="text-xl font-semibold text-trek-blue">{{ trek.name }}</h3>
-            <p class="text-gray-600">{{ trek.location }} | {{ trek.difficulty }}</p>
-            <p class="text-gray-700 mt-2">{{ trek.description|truncatechars:100 }}</p>
-            <a href="{% url 'treks:detail' trek.slug %}" class="mt-3 inline-block px-4 py-2 bg-trek-blue text-white rounded-lg hover:bg-trek-purple transition">
-                View Details
-            </a>
+<div class="min-h-screen bg-gray-50">
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-trek-blue to-trek-purple text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Discover Your Next Adventure</h1>
+            <p class="text-xl text-gray-100">Explore the majestic Himalayan trails</p>
         </div>
-        {% endfor %}
+    </div>
+
+    <!-- Search Bar -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
+        <form method="get" class="bg-white rounded-lg shadow-lg p-4">
+            <div class="flex gap-4">
+                <input 
+                    type="text" 
+                    name="q" 
+                    value="{{ request.GET.q }}"
+                    placeholder="Search treks..." 
+                    class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trek-blue focus:border-transparent"
+                >
+                <button type="submit" class="px-8 py-3 bg-trek-blue text-white rounded-lg hover:bg-trek-purple transition">
+                    Search
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Trek Cards -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {% if treks %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for trek in treks %}
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <!-- Trek Image -->
+                <div class="relative h-64 overflow-hidden">
+                    {% if trek.image %}
+                    <img src="{% static trek.image %}" alt="{{ trek.name }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <div class="w-full h-full bg-gradient-to-br from-trek-blue to-trek-green flex items-center justify-center">
+                        <svg class="w-24 h-24 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                    </div>
+                    {% endif %}
+                    <div class="absolute top-4 right-4">
+                        <span class="px-3 py-1 bg-white text-trek-blue rounded-full text-sm font-semibold shadow-lg">
+                            {{ trek.difficulty }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Trek Info -->
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ trek.name }}</h3>
+                    <p class="text-gray-600 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-trek-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        {{ trek.location }}
+                    </p>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-gray-700">
+                            <svg class="w-5 h-5 mr-2 text-trek-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="text-sm">{{ trek.duration }}</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <svg class="w-5 h-5 mr-2 text-trek-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                            </svg>
+                            <span class="text-sm">{{ trek.altitude }}m altitude</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <svg class="w-5 h-5 mr-2 text-trek-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                            </svg>
+                            <span class="text-sm">Best: {{ trek.best_season }}</span>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ trek.description|truncatewords:20 }}</p>
+
+                    <a href="{% url 'treks:detail' trek.slug %}" class="block w-full text-center px-6 py-3 bg-trek-blue text-white rounded-lg hover:bg-trek-purple transition font-semibold">
+                        View Details
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12">
+            <svg class="mx-auto h-24 w-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="mt-4 text-xl font-medium text-gray-900">No treks found</h3>
+            <p class="mt-2 text-gray-500">Try adjusting your search criteria</p>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

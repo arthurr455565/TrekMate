@@ -1,17 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import GuideProfile
+from .models import GuideProfile, TeamMember
 from .forms import GuideProfileForm
 
 # Check if user is a trekker
 def is_trekker(user):
     return getattr(user, "role", None) == "trekker"
 
-# List all guides (for trekkers)
-@login_required
+# List all guides (public view showing team members)
 def guide_list(request):
-    guides = GuideProfile.objects.select_related("user").all()
-    return render(request, "guides/guide_list.html", {"guides": guides})
+    team_members = TeamMember.objects.filter(is_active=True)
+    return render(request, "guides/guide_list.html", {"team_members": team_members})
 
 # Guide detail view
 @login_required
@@ -52,3 +51,9 @@ def profile_edit(request, pk):
     else:
         form = GuideProfileForm(instance=profile)
     return render(request, "guides/profile_form.html", {"form": form, "profile": profile})
+
+
+# Team page (public view)
+def team(request):
+    team_members = TeamMember.objects.filter(is_active=True)
+    return render(request, "guides/team.html", {"team_members": team_members})

@@ -1,0 +1,263 @@
+<!-- Trek Booking Modal -->
+<div id="trekBookingModal"
+    class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <!-- Modal Header -->
+        <div
+            class="sticky top-0 bg-gradient-to-r from-trek-blue to-trek-purple text-white px-6 py-4 rounded-t-xl flex justify-between items-center">
+            <h2 class="text-2xl font-bold">Book Your Trek</h2>
+            <button onclick="closeTrekBookingModal()" class="text-white hover:text-gray-200 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <form id="trekBookingForm" class="p-6 space-y-6">
+            {% csrf_token %}
+
+            <!-- Success/Error Messages -->
+            <div id="bookingMessage" class="hidden"></div>
+
+            <!-- Name Field -->
+            <div>
+                <label for="booking_name" class="block text-sm font-semibold text-gray-700 mb-2">Name *</label>
+                <input type="text" id="booking_name" name="name" required
+                    value="{% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% endif %}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trek-blue focus:border-transparent"
+                    placeholder="Your full name">
+            </div>
+
+            <!-- Email Field -->
+            <div>
+                <label for="booking_email" class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                <input type="email" id="booking_email" name="email" required
+                    value="{% if user.is_authenticated %}{{ user.email }}{% endif %}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trek-blue focus:border-transparent"
+                    placeholder="your.email@example.com">
+            </div>
+
+            <!-- Trek Interests -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">What trips are you interested in?
+                    *</label>
+                <div class="space-y-2 max-h-64 overflow-y-auto border border-gray-200 rounded-lg p-4">
+                    <label class="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded cursor-pointer">
+                        <input type="checkbox" name="treks" value="poonhill"
+                            class="trek-checkbox mr-2 h-4 w-4 text-trek-blue focus:ring-trek-blue">
+                        <span class="text-gray-700">Poonhill - Ghandruk Trek</span>
+                    </label>
+                    <label class="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded cursor-pointer">
+                        <input type="checkbox" name="treks" value="annapurna_base_camp"
+                            class="trek-checkbox mr-2 h-4 w-4 text-trek-blue focus:ring-trek-blue">
+                        <span class="text-gray-700">Annapurna Base Camp</span>
+                    </label>
+                    <label class="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded cursor-pointer">
+                        <input type="checkbox" name="treks" value="annapurna_circuit"
+                            class="trek-checkbox mr-2 h-4 w-4 text-trek-blue focus:ring-trek-blue">
+                        <span class="text-gray-700">Annapurna Circuit</span>
+                    </label>
+                    <label class="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded cursor-pointer">
+                        <input type="checkbox" name="treks" value="everest_base_camp"
+                            class="trek-checkbox mr-2 h-4 w-4 text-trek-blue focus:ring-trek-blue">
+                        <span class="text-gray-700">Everest Base Camp</span>
+                    </label>
+                    <label class="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded cursor-pointer">
+                        <input type="checkbox" name="treks" value="langtang_valley"
+                            class="trek-checkbox mr-2 h-4 w-4 text-trek-blue focus:ring-trek-blue">
+                        <span class="text-gray-700">Langtang Valley</span>
+                    </label>
+                    <label class="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded cursor-pointer">
+                        <input type="checkbox" name="treks" value="langtang_gosaikund"
+                            class="trek-checkbox mr-2 h-4 w-4 text-trek-blue focus:ring-trek-blue">
+                        <span class="text-gray-700">Langtang Valley via Gosaikund Sacred Lakes</span>
+                    </label>
+                    <label class="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded cursor-pointer">
+                        <input type="checkbox" name="treks" value="manaslu_circuit"
+                            class="trek-checkbox mr-2 h-4 w-4 text-trek-blue focus:ring-trek-blue">
+                        <span class="text-gray-700">Manaslu Circuit</span>
+                    </label>
+                    <label class="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded cursor-pointer">
+                        <input type="checkbox" name="treks" value="dolpo_jumla"
+                            class="trek-checkbox mr-2 h-4 w-4 text-trek-blue focus:ring-trek-blue">
+                        <span class="text-gray-700">Dolpo to Jumla via Kagmara Pass</span>
+                    </label>
+                    <label class="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded cursor-pointer">
+                        <input type="checkbox" name="treks" value="custom"
+                            class="trek-checkbox mr-2 h-4 w-4 text-trek-blue focus:ring-trek-blue">
+                        <span class="text-gray-700">Mustang, Dhaulagiri, Dolpo, Jumla, Kanchenjunga etc</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Preferred Dates -->
+            <div>
+                <label for="booking_dates" class="block text-sm font-semibold text-gray-700 mb-2">What dates were you
+                    thinking? *</label>
+                <textarea id="booking_dates" name="preferred_dates" required rows="2"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trek-blue focus:border-transparent"
+                    placeholder="e.g., April 2025, October 15-30, 2025, or 'Flexible'"></textarea>
+                <p class="text-xs text-gray-500 mt-1">You can trek almost any time in Nepal. April and October usually
+                    have the best visibility/views, but also the most people.</p>
+            </div>
+
+            <!-- Hiking Experience -->
+            <div>
+                <label for="booking_experience" class="block text-sm font-semibold text-gray-700 mb-2">Prior
+                    hiking/trekking experience (include altitude if any)</label>
+                <textarea id="booking_experience" name="hiking_experience" rows="3"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trek-blue focus:border-transparent"
+                    placeholder="Describe your hiking/trekking experience and altitude experience"></textarea>
+            </div>
+
+            <!-- Additional Comments -->
+            <div>
+                <label for="booking_comments" class="block text-sm font-semibold text-gray-700 mb-2">Additional
+                    Comments/Concerns/Questions?</label>
+                <textarea id="booking_comments" name="additional_comments" rows="3"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trek-blue focus:border-transparent"
+                    placeholder="Any questions, concerns, or special requirements?"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex gap-3">
+                <button type="submit" id="bookingSubmitBtn"
+                    class="flex-1 bg-trek-green text-white px-6 py-3 rounded-lg hover:bg-trek-blue transition font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                    <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Submit Booking Request
+                </button>
+                <button type="button" onclick="closeTrekBookingModal()"
+                    class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition font-semibold">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Global functions for modal control
+    function openTrekBookingModal(trekSlug = null) {
+        const modal = document.getElementById('trekBookingModal');
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+
+        // If a trek slug is provided, try to pre-select it
+        if (trekSlug) {
+            preselectTrek(trekSlug);
+        }
+    }
+
+    function closeTrekBookingModal() {
+        const modal = document.getElementById('trekBookingModal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+
+        // Reset form
+        document.getElementById('trekBookingForm').reset();
+        document.getElementById('bookingMessage').classList.add('hidden');
+    }
+
+    function preselectTrek(trekSlug) {
+        // Map trek slugs to checkbox values
+        const trekMap = {
+            'poonhill-ghandruk-trek': 'poonhill',
+            'annapurna-base-camp': 'annapurna_base_camp',
+            'annapurna-circuit': 'annapurna_circuit',
+            'everest-base-camp': 'everest_base_camp',
+            'langtang-valley': 'langtang_valley',
+            'langtang-gosaikund': 'langtang_gosaikund',
+            'manaslu-circuit': 'manaslu_circuit',
+            'dolpo-jumla': 'dolpo_jumla'
+        };
+
+        const checkboxValue = trekMap[trekSlug];
+        if (checkboxValue) {
+            const checkbox = document.querySelector(`input[name="treks"][value="${checkboxValue}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        }
+    }
+
+    // Form submission handler
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('trekBookingForm');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Validate at least one trek is selected
+            const checkboxes = document.querySelectorAll('input[name="treks"]:checked');
+            if (checkboxes.length === 0) {
+                showMessage('Please select at least one trek.', 'error');
+                return;
+            }
+
+            // Prepare form data
+            const formData = new FormData(form);
+
+            // Disable submit button
+            const submitBtn = document.getElementById('bookingSubmitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 inline-block mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Submitting...';
+
+            // Submit via AJAX
+            fetch('{% url "bookings:trek_booking_create" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showMessage(data.message, 'success');
+                        // Reset form after 2 seconds and close modal
+                        setTimeout(() => {
+                            closeTrekBookingModal();
+                        }, 2000);
+                    } else {
+                        let errorMsg = 'There was an error submitting your booking. Please try again.';
+                        if (data.errors) {
+                            errorMsg = Object.values(data.errors).flat().join(' ');
+                        }
+                        showMessage(errorMsg, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showMessage('An unexpected error occurred. Please try again.', 'error');
+                })
+                .finally(() => {
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Submit Booking Request';
+                });
+        });
+    });
+
+    function showMessage(message, type) {
+        const messageDiv = document.getElementById('bookingMessage');
+        messageDiv.classList.remove('hidden', 'bg-green-100', 'border-green-500', 'text-green-700', 'bg-red-100', 'border-red-500', 'text-red-700');
+
+        if (type === 'success') {
+            messageDiv.classList.add('bg-green-100', 'border-l-4', 'border-green-500', 'text-green-700', 'p-4', 'mb-4', 'rounded');
+        } else {
+            messageDiv.classList.add('bg-red-100', 'border-l-4', 'border-red-500', 'text-red-700', 'p-4', 'mb-4', 'rounded');
+        }
+
+        messageDiv.textContent = message;
+    }
+
+    // Close modal on ESC key
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeTrekBookingModal();
+        }
+    });
+</script>

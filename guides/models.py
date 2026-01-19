@@ -12,3 +12,19 @@ class GuideProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class TeamMember(models.Model):
+    name = models.CharField(max_length=200)
+    role = models.CharField(max_length=200)
+    bio = models.TextField()
+    image_url = models.URLField(max_length=500, help_text="URL to team member's photo")
+    order = models.IntegerField(default=0, help_text="Display order (lower numbers appear first)")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return f"{self.name} - {self.role}"

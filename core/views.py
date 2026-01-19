@@ -20,7 +20,10 @@ def contact(request):
 
 @login_required
 def trekker_dashboard(request):
-    return render(request, "core/trekker_dashboard.html")
+    from bookings.models import Booking
+    # Fetch bookings for the logged-in user
+    bookings = Booking.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, "core/trekker_dashboard.html", {'bookings': bookings})
 
 @login_required
 def guide_dashboard(request):

@@ -5,11 +5,11 @@ from .models import Review
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('trekker', 'guide', 'trek', 'date', 'status', 'created_at')
-    list_filter = ('status', 'date')
-    search_fields = ('trekker__username', 'guide__user__username', 'trek__name')
+    list_display = ('name', 'email', 'user', 'selected_treks', 'status', 'created_at')
+    list_filter = ('status', 'created_at')
+    search_fields = ('name', 'email', 'user__username', 'selected_treks')
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('booking', 'rating', 'created_at')
-    search_fields = ('booking__trekker__username', 'booking__guide__user__username')
+    search_fields = ('booking__name', 'booking__email')

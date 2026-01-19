@@ -10,14 +10,14 @@ class Trek(models.Model):
     )
 
     name = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True)  # ✅ Add this
+    slug = models.SlugField(unique=True, blank=True)
     location = models.CharField(max_length=255)
     difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES)
     description = models.TextField()
     duration = models.CharField(max_length=50)
     altitude = models.IntegerField()
     best_season = models.CharField(max_length=50)
-    image = models.ImageField(upload_to='trek_images/', null=True, blank=True)
+    image = models.CharField(max_length=500, blank=True, default='')  # Path to static image
 
     def save(self, *args, **kwargs):
         if not self.slug:

@@ -1,14 +1,50 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import BookingForm
-from .models import Booking
-from .models import Review
-from .forms import ReviewForm
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from .forms import BookingForm, ReviewForm, TrekBookingForm
+from .models import Booking, Review
+
+
+def trek_booking_create(request):
+    """Handle trek booking form submission (AJAX)"""
+    if request.method == 'POST':
+        form = TrekBookingForm(request.POST)
+        if form.is_valid():
+            try:
+                booking = form.save(commit=False, user=request.user if request.user.is_authenticated else None)
+                booking.save()
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Booking request submitted successfully! We will contact you soon.'
+                })
+            except Exception as e:
+                return JsonResponse({
+                    'success': False,
+                    'errors': {'general': [str(e)]}
+                }, status=500)
+        else:
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            }, status=400)
+    
+    # GET request - return form with pre-filled data if user is logged in
+    initial_data = {}
+    if request.user.is_authenticated:
+        initial_data = {
+            'name': request.user.get_full_name() or request.user.username,
+            'email': request.user.email
+        }
+    
+    form = TrekBookingForm(initial=initial_data)
+    return render(request, 'bookings/trek_booking_form.html', {'form': form})
+
 
 @login_required
 def booking_create(request):
     if request.user.role != 'trekker':
-        return redirect('trek_list')  # only trekkers can book
+        return redirect('trek_list')
 
     if request.method == 'POST':
         form = BookingForm(request.POST)
@@ -21,6 +57,7 @@ def booking_create(request):
         form = BookingForm()
     return render(request, 'bookings/booking_form.html', {'form': form})
 
+
 @login_required
 def booking_list(request):
     if request.user.role == 'trekker':
@@ -28,20 +65,17 @@ def booking_list(request):
     elif request.user.role == 'guide':
         bookings = Booking.objects.filter(guide__user=request.user)
     else:
-        bookings = Booking.objects.all()  # admin
+        bookings = Booking.objects.all()
     return render(request, 'bookings/booking_list.html', {'bookings': bookings})
-
 
 
 @login_required
 def add_review(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
 
-    # Only the trekker who made the booking can review
     if booking.trekker != request.user:
         return redirect('booking_list')
 
-    # Check if review already exists
     try:
         review = booking.review
         return redirect('booking_list')
