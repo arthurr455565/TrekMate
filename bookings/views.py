@@ -2,8 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.core.mail import send_mail
-from django.conf import settings
 from .forms import BookingForm, ReviewForm, TrekBookingForm
 from .models import Booking, Review
 
@@ -16,37 +14,9 @@ def trek_booking_create(request):
             try:
                 booking = form.save(commit=False, user=request.user if request.user.is_authenticated else None)
                 booking.save()
-
-                # Send confirmation email
-                subject = f'Booking Confirmation: {booking.selected_treks}'
-                message = f"""
-Dear {booking.name},
-
-Thank you for booking with TrekMate! We have received your booking request.
-
-Details:
-Treks: {booking.selected_treks}
-Dates: {booking.preferred_dates}
-
-We will contact you shortly at {booking.email} to finalize the details.
-
-Best regards,
-The TrekMate Team
-"""
-                try:
-                    send_mail(
-                        subject,
-                        message,
-                        settings.DEFAULT_FROM_EMAIL,
-                        [booking.email],
-                        fail_silently=True,
-                    )
-                except Exception:
-                    pass  # Don't fail booking if email fails
-
                 return JsonResponse({
                     'success': True,
-                    'message': 'Booking request submitted successfully! We have sent a confirmation email.'
+                    'message': 'Booking request submitted successfully! We will contact you soon.'
                 })
             except Exception as e:
                 return JsonResponse({
@@ -74,7 +44,7 @@ The TrekMate Team
 @login_required
 def booking_create(request):
     if request.user.role != 'trekker':
-        return redirect('trek_list')
+        return redirect('treks:list')
 
     if request.method == 'POST':
         form = BookingForm(request.POST)
@@ -82,7 +52,7 @@ def booking_create(request):
             booking = form.save(commit=False)
             booking.trekker = request.user
             booking.save()
-            return redirect('booking_list')
+            return redirect('core:dashboard')
     else:
         form = BookingForm()
     return render(request, 'bookings/booking_form.html', {'form': form})
@@ -108,7 +78,7 @@ def add_review(request, booking_id):
 
     try:
         review = booking.review
-        return redirect('booking_list')
+        return redirect('core:dashboard')
     except Review.DoesNotExist:
         pass
 
@@ -118,7 +88,7 @@ def add_review(request, booking_id):
             review = form.save(commit=False)
             review.booking = booking
             review.save()
-            return redirect('booking_list')
+            return redirect('core:dashboard')
     else:
         form = ReviewForm()
 
